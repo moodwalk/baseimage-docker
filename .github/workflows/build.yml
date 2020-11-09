@@ -22,4 +22,4 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: Build image
-        run: QEMU_ARCH=amd64 /bin/bash build-moodwork.sh
+        run: BASE_IMAGE=ubuntu:20.04 VERSION=latest NAME=rg.fr-par.scw.cloud/moodwork/base:image PLATFORM=amd64 QEMU_ARCH=amd64 TAG_ARCH=amd64 make build
