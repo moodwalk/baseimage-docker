@@ -6,7 +6,8 @@ name: CI
 # events but only for the master branch
 on:
   push:
-    branches: [ '**' ]
+    tags:
+      - '*'
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -22,8 +23,8 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: Build image
-        run: BASE_IMAGE=ubuntu:20.04 VERSION=latest NAME=rg.fr-par.scw.cloud/moodwork/base-image PLATFORM=amd64 QEMU_ARCH=amd64 TAG_ARCH=amd64 make build
+        run: BASE_IMAGE=ubuntu:20.04 VERSION=${{ github.event.release.tag_name }} NAME=rg.fr-par.scw.cloud/moodwork/base-image PLATFORM=amd64 QEMU_ARCH=amd64 TAG_ARCH=amd64 make build
       - name: Push image
-        run: docker push rg.fr-par.scw.cloud/moodwork/base-image:latest-amd64
+        run: docker push rg.fr-par.scw.cloud/moodwork/base-image:${{ github.event.release.tag_name }}-amd64
       - name: Cleanup image
-        run: docker rmi rg.fr-par.scw.cloud/moodwork/base-image:latest-amd64
+        run: docker rmi rg.fr-par.scw.cloud/moodwork/base-image:${{ github.event.release.tag_name }}-amd64
