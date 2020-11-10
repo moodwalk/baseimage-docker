@@ -16,6 +16,7 @@ jobs:
       - run: 
           name: Authenticate on Image Registry
           command: |
+            echo $NAME:$CIRCLE_TAG-$TAG_ARCH
             docker login rg.fr-par.scw.cloud/moodwork -u nologin -p $SCW_CONTAINER_REGISTRY
       - run: 
           name: "Build moodwork docker image"
@@ -24,7 +25,7 @@ jobs:
       - run:
           name: Push to store
           command: |
-            docker push $NAME:$CIRCLE_TAG
+            docker push $NAME:$CIRCLE_TAG-$TAG_ARCH
 
 workflows:
   version: 2
