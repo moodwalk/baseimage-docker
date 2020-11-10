@@ -1,21 +1,40 @@
-version: 2
+version: 2.1
+
 jobs:
   build:
-    machine: true
+    machine: 
+      image: ubuntu-2004:202010-01
+      docker_layer_caching: true
+    environment:
+      NAME: rg.fr-par.scw.cloud/moodwork/base-image
+      BASE_IMAGE: ubuntu:20.04
+      PLATFORM: amd64
+      QEMU_ARCH: amd64 
+      TAG_ARCH: amd64
     steps:
       - checkout
-      #- run:
-      #    name : Getting docker
-      #    command: curl https://get.docker.com | sh
+      - run: 
+          name: Authenticate on Image Registry
+          command: |
+            docker login rg.fr-par.scw.cloud/moodwork -u nologin -p $SCW_CONTAINER_REGISTRY
+      - run: 
+          name: "Build moodwork docker image"
+          command: |
+            VERSION=$CIRCLE_TAG make build
       - run:
-          name: Enabling qemu
-          command: docker run --rm --privileged multiarch/qemu-user-static:register --reset
-      - run:
-          name: Building arm based image.
-          command: docker build -t arm-test .
-      - run:
-          name: Listing built images
-          command: docker images
-      # - run:
-      #     name: Running arm based image.
-      #     command: docker run --rm arm-test 
+          name: Push to store
+          command: |
+            docker push $NAME:$CIRCLE_TAG
+
+workflows:
+  version: 2
+  build:
+    jobs:
+      - build:
+          context: docker
+          filters:
+            branches:
+              ignore: /.*/            
+            tags:
+              only: /.*\..*\..*/
+
