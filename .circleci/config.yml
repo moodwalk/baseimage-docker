@@ -6,7 +6,7 @@ jobs:
       image: ubuntu-2004:202010-01
       docker_layer_caching: true
     environment:
-      NAME: rg.fr-par.scw.cloud/moodwork/base-image
+      NAME: rg.fr-par.scw.cloud/moodwork-docker-images/base-image
       BASE_IMAGE: ubuntu:20.04
       PLATFORM: amd64
       QEMU_ARCH: amd64 
@@ -16,7 +16,7 @@ jobs:
       - run: 
           name: Authenticate on Image Registry
           command: |
-            docker login rg.fr-par.scw.cloud/moodwork -u nologin -p $SCW_CONTAINER_REGISTRY
+            docker login rg.fr-par.scw.cloud/moodwork-docker-images -u nologin -p $SCW_CONTAINER_REGISTRY
       - run: 
           name: "Build moodwork docker image"
           command: |
