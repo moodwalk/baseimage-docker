@@ -37,6 +37,9 @@ workflows:
             branches:
               only:
                 - master
+    jobs:
+      - build:
+          context: docker               
   build:
     jobs:
       - build:
