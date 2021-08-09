@@ -20,8 +20,8 @@ jobs:
       - run: 
           name: "Build moodwork docker image"
           command: |
-            VERSION=$CIRCLE_TAG make build
-            VERSION=$CIRCLE_TAG make tag_latest
+            VERSION=${CIRCLE_BRANCH} make build
+            VERSION=${CIRCLE_BRANCH} tag_latest
       - run:
           name: Push to store
           command: |
