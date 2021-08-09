@@ -25,7 +25,7 @@ jobs:
       - run:
           name: Push to store
           command: |
-            docker push $NAME:latest
+            docker push $NAME:latest-${TAG_ARCH}
 
 workflows:
   version: 2
