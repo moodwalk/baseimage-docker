@@ -21,20 +21,28 @@ jobs:
           name: "Build moodwork docker image"
           command: |
             VERSION=$CIRCLE_TAG make build
+            VERSION=$CIRCLE_TAG make tag_latest
       - run:
           name: Push to store
           command: |
-            docker push $NAME:$CIRCLE_TAG-$TAG_ARCH
+            docker push $NAME:latest
 
 workflows:
   version: 2
+  nightly:
+    triggers:
+      - schedule:
+          cron: "0 0 * * *"
+          filters:
+            branches:
+              only:
+                - master
   build:
     jobs:
       - build:
           context: docker
           filters:
             branches:
-              ignore: /.*/            
-            tags:
-              only: /.*\..*\..*/
+              only:
+                - master
 
