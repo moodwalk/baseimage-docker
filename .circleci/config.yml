@@ -16,7 +16,7 @@ jobs:
       - run: 
           name: Authenticate on Image Registry
           command: |
-            docker login -u moodworkdevops -p $DOCKERHUB_REGISTRY
+            echo “$DOCKERHUB_REGISTRY” | docker login -u moodworkdevops —-password-stdin
       - run: 
           name: "Build moodwork docker image"
           command: |
