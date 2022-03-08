@@ -48,5 +48,4 @@ workflows:
             branches:
               only:
                 - master
-                - feature/dockerhub
-
+                - dockerhub
