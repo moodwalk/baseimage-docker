@@ -6,7 +6,7 @@ jobs:
       image: ubuntu-2004:202010-01
       docker_layer_caching: true
     environment:
-      NAME: moodwalk/moodwork-docker-images/base-image
+      NAME: moodwalk/moodwork-base-image
       BASE_IMAGE: ubuntu:20.04
       PLATFORM: amd64
       QEMU_ARCH: amd64 
