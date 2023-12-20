@@ -17,10 +17,8 @@ jobs:
     steps:
       - checkout
       - aws-ecr/ecr_login:
-          aws-access-key-id: ${AWS_ACCESS_KEY_ID}
-          aws-secret-access-key: ${AWS_SECRET_ACCESS_KEY}
-          aws-region: ${AWS_DEFAULT_REGION}
-          account-id: ${AWS_ACCOUNT_ID}
+          region: ${AWS_DEFAULT_REGION}
+          account_id: ${AWS_ACCOUNT_ID}
       - run: 
           name: Authenticate on Image Registry
           command: |
