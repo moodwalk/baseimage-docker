@@ -16,9 +16,12 @@ jobs:
       TAG_ARCH: amd64
     steps:
       - checkout
+      - run: 
+          name: "Print environment variables"
+          command: |
+            env
       - aws-ecr/ecr_login:
           region: ${AWS_DEFAULT_REGION}
-          account_id: ${AWS_ACCOUNT_ID}
       - run: 
           name: Authenticate on Image Registry
           command: |
