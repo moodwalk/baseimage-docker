@@ -20,6 +20,8 @@ jobs:
           name: "Print environment variables"
           command: |
             env
+      - aws-cli/setup:
+          profile_name: default
       - aws-ecr/ecr_login:
           region: ${AWS_DEFAULT_REGION}
       - run: 
