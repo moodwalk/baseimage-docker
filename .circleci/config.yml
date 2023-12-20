@@ -47,7 +47,9 @@ workflows:
                 - master
     jobs:
       - build:
-          context: docker               
+          context: 
+            - docker               
+            - aws-ecr
   build:
     jobs:
       - build:
