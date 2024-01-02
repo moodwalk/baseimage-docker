@@ -1,4 +1,7 @@
 version: 2.1
+orbs:
+  aws-cli: circleci/aws-cli@4.0
+  aws-ecr: circleci/aws-ecr@9.0
 
 jobs:
   build:
@@ -7,12 +10,21 @@ jobs:
       docker_layer_caching: true
     environment:
       NAME: rg.fr-par.scw.cloud/moodwork-docker-images/base-image
+      AWS_IMAGE_NAME: moodwork-base-image
       BASE_IMAGE: ubuntu:20.04
       PLATFORM: amd64
       QEMU_ARCH: amd64 
       TAG_ARCH: amd64
     steps:
       - checkout
+      - run: 
+          name: "Print environment variables"
+          command: |
+            env
+      - aws-cli/setup:
+          profile_name: default
+      - aws-ecr/ecr_login:
+          region: ${AWS_DEFAULT_REGION}
       - run: 
           name: Authenticate on Image Registry
           command: |
@@ -23,9 +35,14 @@ jobs:
             VERSION=${CIRCLE_BRANCH} make build
             VERSION=${CIRCLE_BRANCH} make tag_latest
       - run:
-          name: Push to store
+          name: Push to Scaleway store
           command: |
             docker push $NAME:latest-${TAG_ARCH}
+      - run: 
+          name: "Push moodwork docker image to AWS"
+          command: |
+            docker tag $NAME:latest-${TAG_ARCH} ${REPOSITORY_BASE}/${AWS_IMAGE_NAME}:latest-${TAG_ARCH}
+            docker push ${REPOSITORY_BASE}/${AWS_IMAGE_NAME}:latest-${TAG_ARCH}
 
 workflows:
   version: 2
@@ -39,13 +56,18 @@ workflows:
                 - master
     jobs:
       - build:
-          context: docker               
+          context: 
+            - docker               
+            - aws-ecr
   build:
     jobs:
       - build:
-          context: docker
+          context: 
+            - docker
+            - aws-ecr
           filters:
             branches:
               only:
                 - master
+                - aws
 
