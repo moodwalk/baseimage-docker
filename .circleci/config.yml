@@ -6,12 +6,12 @@ orbs:
 jobs:
   build:
     machine: 
-      image: ubuntu-2004:202010-01
+      image: ubuntu-2404:latest
       docker_layer_caching: true
     environment:
       NAME: rg.fr-par.scw.cloud/moodwork-docker-images/base-image
       AWS_IMAGE_NAME: moodwork-base-image
-      BASE_IMAGE: ubuntu:20.04
+      BASE_IMAGE: ubuntu:24.04
       PLATFORM: amd64
       QEMU_ARCH: amd64 
       TAG_ARCH: amd64
