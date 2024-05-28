@@ -6,7 +6,7 @@ orbs:
 jobs:
   build:
     machine: 
-      image: ubuntu-2404:latest
+      image: ubuntu-2204:2024.04.4
       docker_layer_caching: true
     environment:
       NAME: rg.fr-par.scw.cloud/moodwork-docker-images/base-image
